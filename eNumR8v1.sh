@@ -29,7 +29,7 @@ mkdir /tmp/eNumR8_${varDate}
 
 
 echo -e "${NOTIF}Running Network Scan - Skipping Ping Test ..."
-echo -e "${NC}Test Results will be available in /tmp/eNumR8_${varDate}/skip_ping_nmap_basic"
+echo -e "${NC}Test Results will be available in /tmp/eNumR8_${varDate}/skip_ping_nmap_scan"
 #------------------------------
 #SKIP Ping Test
 #------------------------------
