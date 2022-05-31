@@ -86,45 +86,45 @@ sleep 10
 #Network scan:
 #Create directory
 echo -e "${NOTIF}Running Network Scan with Ping Test ..."
-echo "Test Results will be available in /tmp/eNumR8_${varDate}/nmap_basic"
-mkdir /tmp/eNumR8_${varDate}/nmap_basic
-nmap -sn $hostIP > /tmp/eNumR8_${varDate}/nmap_basic/netscan.txt &
+echo -e "${NC}Test Results will be available in /tmp/eNumR8_${varDate}/nmap_scan"
+mkdir /tmp/eNumR8_${varDate}/nmap_scan
+nmap -sn $hostIP > /tmp/eNumR8_${varDate}/nmap_scan/netscan.txt &
 sleep 10
 
 echo -e "${NOTIF}Running Port Scan with Ping Test ..."
 #Basic Port scan
-nmap -sT -sV -n $hostIP > /tmp/eNumR8_${varDate}/nmap_basic/portscan.txt &
+nmap -sT -sV -n $hostIP > /tmp/eNumR8_${varDate}/nmap_scan/portscan.txt &
 sleep 10
 
 echo -e "${NOTIF}Running OS Scan with Ping Test ..."
 #OS Scan
-nmap -A -O -n $hostIP --osscan-guess > /tmp/eNumR8_${varDate}/nmap_basic/osscan.txt &
+nmap -A -O -n $hostIP --osscan-guess > /tmp/eNumR8_${varDate}/nmap_scan/osscan.txt &
 sleep 10
 
 echo -e "${NOTIF}Running All Port Scan with Ping Test ..."
 #All Port Scan
-nmap -sT -n -p- $hostIP -T4 > /tmp/eNumR8_${varDate}/nmap_basic/allportscan.txt &
+nmap -sT -n -p- $hostIP -T4 > /tmp/eNumR8_${varDate}/nmap_scan/allportscan.txt &
 sleep 10
 
 echo -e "${NOTIF}Running nmap Scripts ..."
 
 echo -e "${NOTIF}Running DNS - nmap Scripts ..."
-nmap -sS -sU -p53 -n $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_dns.txt &
+nmap -sS -sU -p53 -n $hostIP > /tmp/eNumR8_${varDate}/nmap_scan/nse_dns.txt &
 sleep 10
 
 #Anonymous FTP Discovery:
 echo -e "${NOTIF}Running FTP - nmap Scripts ..."
-nmap --script ftp-anon $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_ftp.txt &
+nmap --script ftp-anon $hostIP > /tmp/eNumR8_${varDate}/nmap_scan/nse_ftp.txt &
 sleep 10
 
 #Heartbleed vulnerability checker:
 echo -e "${NOTIF}Running Heartbleed - nmap Scripts ..."
-nmap --script ssl-heartbleed $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_heartbleed.txt &
+nmap --script ssl-heartbleed $hostIP > /tmp/eNumR8_${varDate}/nmap_scan/nse_heartbleed.txt &
 sleep 10
 
 #Find the path to WebDAV:
 echo -e "${NOTIF}Running WebDAV - nmap Scripts ..."
-nmap -p80 --script http-enum $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_webdav.txt &
+nmap -p80 --script http-enum $hostIP > /tmp/eNumR8_${varDate}/nmap_scan/nse_webdav.txt &
 sleep 10
 
 
@@ -169,4 +169,4 @@ sleep 10
 smbclient --no-pass -L //$hostIP > /tmp/eNumR8_${varDate}/smb_enum/smb_shares.txt &
 sleep 10
 
-done
+exit 1
