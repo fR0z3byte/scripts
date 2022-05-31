@@ -1,6 +1,6 @@
 #!/bin/bash
 BANNER='\033[0;32m'
-NOTIF='\033[0;34m'
+NOTIF='\033[1;35m'
 NC='\033[0m'
 
 echo -e "${BANNER}---------------------------------"
@@ -35,24 +35,50 @@ echo -e "${NC}Test Results will be available in /tmp/eNumR8_${varDate}/skip_ping
 #------------------------------
 #Network scan:
 #Create directory
-mkdir /tmp/eNumR8_${varDate}/skip_ping_nmap_basic
-nmap -sn -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_basic/netscan.txt &
+mkdir /tmp/eNumR8_${varDate}/skip_ping_nmap_scan
+nmap -sn -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/netscan.txt &
 sleep 10
 
 echo -e "${NOTIF}Running Basic Port Scan - Skipping Ping Test ..."
 #Basic Port scan
-nmap -sT -sV -n -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_basic/portscan.txt &
+nmap -sT -sV -n -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/portscan.txt &
 sleep 10
 
 echo -e "${NOTIF}Running OS Scan - Skipping Ping Test ..."
 #OS Scan
-nmap -A -O -n -Pn $hostIP --osscan-guess > /tmp/eNumR8_${varDate}/skip_ping_nmap_basic/osscan.txt &
+nmap -A -O -n -Pn $hostIP --osscan-guess > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/osscan.txt &
 sleep 10
 
 echo -e "${NOTIF}Running All Port Scan - Skipping Ping Test ..."
 #All Port Scan
-nmap -sT -n -p- -Pn $hostIP -T4 > /tmp/eNumR8_${varDate}/skip_ping_nmap_basic/allportscan.txt &
+nmap -sT -n -p- -Pn $hostIP -T4 > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/allportscan.txt &
 sleep 10
+
+#nmap scripts
+#DNS Discovery:
+#Create directory
+echo -e "${NOTIF}Running nmap Scripts ..."
+
+echo -e "${NOTIF}Running DNS - nmap Scripts ..."
+nmap -sS -sU -p53 -n -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_dns.txt &
+sleep 10
+
+#Anonymous FTP Discovery:
+echo -e "${NOTIF}Running FTP - nmap Scripts ..."
+nmap --script ftp-anon -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_ftp.txt &
+sleep 10
+
+#Heartbleed vulnerability checker:
+echo -e "${NOTIF}Running Heartbleed - nmap Scripts ..."
+nmap --script ssl-heartbleed -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_heartbleed.txt &
+sleep 10
+
+#Find the path to WebDAV:
+echo -e "${NOTIF}Running WebDAV - nmap Scripts ..."
+nmap -p80 --script http-enum -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_webdav.txt &
+sleep 10
+
+
 
 #------------------------------
 #With Ping Test
@@ -80,31 +106,27 @@ echo -e "${NOTIF}Running All Port Scan with Ping Test ..."
 nmap -sT -n -p- $hostIP -T4 > /tmp/eNumR8_${varDate}/nmap_basic/allportscan.txt &
 sleep 10
 
-
-#nmap scripts
-#DNS Discovery:
-#Create directory
 echo -e "${NOTIF}Running nmap Scripts ..."
-echo -e "${NC}Test Results will be available in /tmp/eNumR8_${varDate}/nmap_script"
-mkdir /tmp/eNumR8_${varDate}/nmap_script
-echo -e "${NOTIF}DNS - nmap Scripts ..."
-nmap -sS -sU -p53 -n $hostIP > /tmp/eNumR8_${varDate}/nmap_script/nse_dns.txt &
+
+echo -e "${NOTIF}Running DNS - nmap Scripts ..."
+nmap -sS -sU -p53 -n $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_dns.txt &
 sleep 10
 
 #Anonymous FTP Discovery:
-echo -e "${NOTIF}FTP - nmap Scripts ..."
-nmap --script ftp-anon $hostIP > /tmp/eNumR8_${varDate}/nmap_script/nse_ftp.txt &
+echo -e "${NOTIF}Running FTP - nmap Scripts ..."
+nmap --script ftp-anon $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_ftp.txt &
 sleep 10
 
 #Heartbleed vulnerability checker:
-echo -e "${NOTIF}Heartbleed - nmap Scripts ..."
-nmap --script ssl-heartbleed $hostIP > /tmp/eNumR8_${varDate}/nmap_script/nse_heartbleed.txt &
+echo -e "${NOTIF}Running Heartbleed - nmap Scripts ..."
+nmap --script ssl-heartbleed $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_heartbleed.txt &
 sleep 10
 
 #Find the path to WebDAV:
-echo -e "${NOTIF}WebDAV - nmap Scripts ..."
-nmap -p80 --script http-enum $hostIP > /tmp/eNumR8_${varDate}/nmap_script/nse_webdav.txt &
-sleep 60
+echo -e "${NOTIF}Running WebDAV - nmap Scripts ..."
+nmap -p80 --script http-enum $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_webdav.txt &
+sleep 10
+
 
 
 
@@ -136,6 +158,9 @@ sleep 10
 nmap -p445 --script smb-enum-users.nse $hostIP > /tmp/eNumR8_${varDate}/smb_enum/smb_users.txt &
 sleep 10
 
+#Check for SMB Vulnerabilities:
+nmap --script smb-vuln* -p 445 $hostIP > /tmp/eNumR8_${varDate}/smb_enum/smb_vuln.txt &
+
 #Test for NBT-NS and LLMNR
 python3 /usr/share/responder/tools/RunFinger.py -i $hostIP > /tmp/eNumR8_${varDate}/smb_enum/smb_responder.txt &
 sleep 10
@@ -143,3 +168,5 @@ sleep 10
 #Check for smb shares
 smbclient --no-pass -L //$hostIP > /tmp/eNumR8_${varDate}/smb_enum/smb_shares.txt &
 sleep 10
+
+done
