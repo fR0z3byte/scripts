@@ -73,6 +73,11 @@ echo -e "${NOTIF}Running Heartbleed - nmap Scripts ..."
 nmap --script ssl-heartbleed -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_heartbleed.txt &
 sleep 10
 
+#SNMP Discovery:
+echo -e "${NOTIF}Running SNMP - nmap Scripts ..."
+nmap -sU -p 161 --script snmp-* -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_snmp.txt &
+sleep 10
+
 #Find the path to WebDAV:
 echo -e "${NOTIF}Running WebDAV - nmap Scripts ..."
 nmap -p80 --script http-enum -Pn $hostIP > /tmp/eNumR8_${varDate}/skip_ping_nmap_scan/nse_webdav.txt &
@@ -122,6 +127,11 @@ echo -e "${NOTIF}Running Heartbleed - nmap Scripts ..."
 nmap --script ssl-heartbleed $hostIP > /tmp/eNumR8_${varDate}/nmap_scan/nse_heartbleed.txt &
 sleep 10
 
+#SNMP Discovery:
+echo -e "${NOTIF}Running SNMP - nmap Scripts ..."
+nmap -sU -p 161 --script snmp-* $hostIP > /tmp/eNumR8_${varDate}/nmap_scan/nse_snmp.txt &
+sleep 10
+
 #Find the path to WebDAV:
 echo -e "${NOTIF}Running WebDAV - nmap Scripts ..."
 nmap -p80 --script http-enum $hostIP > /tmp/eNumR8_${varDate}/nmap_scan/nse_webdav.txt &
@@ -168,5 +178,7 @@ sleep 10
 #Check for smb shares
 smbclient --no-pass -L //$hostIP > /tmp/eNumR8_${varDate}/smb_enum/smb_shares.txt &
 sleep 10
+
+echo -e "${BANNER}Enumeration Completed!! Please wait for the other results to complete."
 
 exit 1
