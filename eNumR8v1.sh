@@ -14,12 +14,12 @@ echo -e "${BANNER}by fR0z3byte"
 varDate="$(date +'%m_%d_%Y_%H%M%S')"
 
 #Get Network Address
-echo -e "${NC}Please Enter Network Address to Scan: "
+echo -e "${NC}Please Enter Network Address to Scan: \c"
 
 read network
 
 #Get Host IP Address
-echo -e "${NC}Please Enter IP Address for Port Scan: "
+echo -e "${NC}Please Enter IP Address for Port Scan: \c"
 
 read hostIP
 
