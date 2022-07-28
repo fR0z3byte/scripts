@@ -1,6 +1,5 @@
-===========
 eNumR8
-==========
+
 
 This script automatically launches the following tools:
 - nmap:
