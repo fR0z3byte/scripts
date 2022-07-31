@@ -1,4 +1,4 @@
-eNumR8
+eNumR8 - Automated Network Enumeration Tool
 
 
 This script automatically launches the following tools:
