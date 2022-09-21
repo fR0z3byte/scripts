@@ -10,6 +10,7 @@ This script automatically launches the following tools:
   * SNMP Enumeration
   * OS Scan
   * Webdav Vulnerability
+  * Wordpress Enumeration
   * SMB Enumeration:
     - SMB Protocols
     - SMB Security Mode
