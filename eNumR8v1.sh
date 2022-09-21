@@ -145,10 +145,10 @@ sleep 10
 echo -e "${NOTIF}Running Web Directory Enumeration ..."
 echo -e "${NC}Test Results will be available in /tmp/eNumR8_${varDate}/web_dir_enum"
 mkdir /tmp/eNumR8_${varDate}/web_dir_enum
-gobuster dir --url http://$hostIP -w /usr/share/dirb/wordlists/common.txt -q > /tmp/eNumR8_${varDate}/web_dir_enum/common.txt &
+gobuster dir --url http://$hostIP -w /usr/share/dirb/wordlists/common.txt -x php,txt,html,py,css -q > /tmp/eNumR8_${varDate}/web_dir_enum/common.txt &
 sleep 60
 
-gobuster dir -u http://$hostIP -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -q > /tmp/eNumR8_${varDate}/web_dir_enum/medium.txt &
+gobuster dir -u http://$hostIP -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x php,txt,html,py,css -q > /tmp/eNumR8_${varDate}/web_dir_enum/medium.txt &
 sleep 60
 
 
@@ -178,6 +178,12 @@ sleep 10
 #Check for smb shares
 smbclient --no-pass -L //$hostIP > /tmp/eNumR8_${varDate}/smb_enum/smb_shares.txt &
 sleep 10
+
+#Wordpress Enumeration
+mkdir /tmp/eNumR8_${varDate}/wordpress_enum
+nmap --script http-wordpress-enum $hostIP > /tmp/eNumR8_${varDate}/wordpress_enum/wordpress_enum.txt &
+nmap --script http-wordpress-brute $hostIP > /tmp/eNumR8_${varDate}/wordpress_enum/wordpress_brute.txt &
+nmap --script http-wordpress-enum $hostIP > /tmp/eNumR8_${varDate}/wordpress_enum/wordpress_users.txt &
 
 echo -e "${BANNER}Enumeration Completed!! Please wait for the other results to complete."
 
