@@ -1,6 +1,9 @@
 
 NetCheck Beta
+
 Introduction
+
+
 NetCheck Beta is a simple network performance tool designed for IT administrators to provide to non-technical users. This tool automates common network tests, making it easy for users to conduct diagnostics without requiring in-depth technical knowledge. The script is authored by fR0z3byte.
 
 Features
