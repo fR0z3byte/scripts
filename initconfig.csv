@@ -1,0 +1,3 @@
+service,count,timeout(ms),no. hops,timer(sec)
+ping,20,2000,n/a,60
+trace route,,2000,15,90
